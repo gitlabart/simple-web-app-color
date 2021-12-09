@@ -1,0 +1,64 @@
+####### RUN-STDIN Demo: ########## 
+docker run kodekloud/simple-prompt-docker
+docker run -i kodekloud/simple-prompt-docker
+echo "YOUR-NAME" | docker run -i kodekloud/simple-prompt-docker
+echo "YOUR-NAME" | docker run -it kodekloud/simple-prompt-docker
+
+Linux = alles ist Datei 
+tty = teletype Ausgabe Dateinamen über STDIN (Eingabe über die Tastatur wird vom Terminal als Datei interpriert)
+
+####### RUN - PORT Mapping Demo: ########
+docker run kodekloud/webapp 
+docker run –p 80:8080 kodekloud/simple-webapp
+
+80   --> Host 
+8080 --> Container 
+
+####### RUN - Logs: ########
+docker run --name nginx-without-volume -p 80:80  -d nginx 
+docker exec -it nginx-without-volume /bin/bash 
+echo Hallo >> /proc/1/fd/1
+
+
+####### RUN - Volume Mapping Demo: ########
+https://hub.docker.com/_/nginx 
+
+docker run --name nginx-without-volume -p 80:80  -d nginx 
+docker cp index.html nginx-without-volume:/usr/share/nginx/html/
+docker stop nginx-without-volume 
+docker rm nginx-without-volume 
+docker run --name nginx-without-volume -p 80:80  -d nginx
+
+
+docker run --name nginx-with-volume  -p 80:80 -v /tmp/index.html:/usr/share/nginx/html:ro -d nginx
+cd /tmp/ 
+nano  index.html 
+vim   index.html 
+docker stop nginx-with-volume
+docker rm nginx-with-volume 
+docker run --name nginx-with-volume  -p 80:80 -v /tmp/index.html:/usr/share/nginx/html:ro -d nginx
+
+######## Environments Variables #########
+git clone https://github.com/mmumshad/simple-webapp-color.git
+python3 app.py 
+export APP_COLOR=red;
+env | grep APP_COLOR
+python3 app.py 
+
+
+docker run -e APP_COLOR=green -p 80:8080 mmumshad/simple-webapp-color
+
+
+####### Dockerfile vs OS ###########
+export FLASK_APP=/tmp/simple-webapp-color/app.py
+flask run 
+
+
+docker build -t artems/custom-image-pink:v3 .
+docker run -p 80:8080 artems/custom-image-pink
+
+####### ENTRYPOINT VS CMD ###############
+
+
+######## Beispiele Dockerfile ########
+https://github.com/kstaken/dockerfile-examples
